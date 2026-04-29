@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simposio de Neurointegración | Dr. Felipe Camero Aguilar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0f;
+    --deep: #0f0f1a;
+    --navy: #0d1b3e;
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --gold-pale: #f5e6b8;
+    --white: #f7f4ee;
+    --text: #e8e4d8;
+    --muted: #9a9280;
+    --accent: #2a6496;
+    --accent2: #1a4a6e;
+    --red: #c0392b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── GRAIN OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.5;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 80px 24px 60px;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, #1a1a3e 0%, var(--black) 70%);
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .hero-bg svg {
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    opacity: 0.08;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.35);
+    color: var(--gold-light);
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    border-radius: 2px;
+    margin-bottom: 32px;
+    animation: fadeUp 0.8s ease both;
+  }
+  .badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5.5vw, 72px);
+    font-weight: 900;
+    line-height: 1.1;
+    text-align: center;
+    max-width: 920px;
+    color: var(--white);
+    animation: fadeUp 0.9s 0.1s ease both;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+    display: block;
+  }
+
+  .hero-sub {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(14px, 1.8vw, 18px);
+    font-weight: 600;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 24px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    animation: fadeUp 1s 0.2s ease both;
+  }
+
+  .date-strip {
+    display: flex;
+    gap: 16px;
+    margin-top: 40px;
+    animation: fadeUp 1s 0.3s ease both;
+  }
+  .date-pill {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.25);
+    padding: 12px 28px;
+    text-align: center;
+    border-radius: 2px;
+  }
+  .date-pill .day {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .date-pill .month {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .date-sep {
+    display: flex;
+    align-items: center;
+    color: var(--muted);
+    font-size: 24px;
+    opacity: 0.4;
+  }
+
+  .location-tag {
+    margin-top: 20px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: fadeUp 1s 0.4s ease both;
+  }
+  .location-tag svg { color: var(--gold); flex-shrink: 0; }
+
+  .cta-hero {
+    margin-top: 48px;
+    animation: fadeUp 1s 0.5s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(24px); }
+    to { opacity:1; transform: translateY(0); }
+  }
+
+  /* ── BUTTONS ── */
+  .btn-gold {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+    background-size: 200% auto;
+    color: var(--black);
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 18px 48px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background-position 0.4s, box-shadow 0.3s, transform 0.2s;
+    box-shadow: 0 4px 30px rgba(201,168,76,0.35);
+  }
+  .btn-gold:hover {
+    background-position: right center;
+    box-shadow: 0 8px 50px rgba(201,168,76,0.55);
+    transform: translateY(-2px);
+  }
+
+  .btn-outline {
+    display: inline-block;
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 14px 36px;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .btn-outline:hover {
+    background: rgba(201,168,76,0.1);
+    box-shadow: 0 0 20px rgba(201,168,76,0.2);
+  }
+
+  /* ── CONTAINER ── */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── SECTION HEADERS ── */
+  .section-tag {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.15;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  /* ── URGENCY BAND ── */
+  .urgency-band {
+    background: linear-gradient(135deg, #8b0000, var(--red));
+    padding: 16px;
+    text-align: center;
+  }
+  .urgency-band p {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fff;
+  }
+  .urgency-band strong { color: #ffd700; }
+
+  /* ── PAIN SECTION ── */
+  .pain-section {
+    padding: 100px 0;
+    background: var(--deep);
+    position: relative;
+  }
+  .pain-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent);
+  }
+
+  .pain-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-top: 60px;
+  }
+
+  .pain-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .pain-list li {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 20px;
+    background: rgba(255,255,255,0.02);
+    border-left: 2px solid var(--red);
+    border-radius: 0 4px 4px 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+    transition: all 0.3s;
+  }
+  .pain-list li:hover {
+    background: rgba(192,57,43,0.08);
+    color: var(--text);
+  }
+  .pain-list li span.icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+
+  .pain-promise {
+    background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(42,100,150,0.08));
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 40px;
+    border-radius: 4px;
+  }
+  .pain-promise blockquote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 2.5vw, 28px);
+    font-style: italic;
+    color: var(--white);
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+  .pain-promise blockquote span { color: var(--gold); }
+
+  /* ── PROGRAM SECTION ── */
+  .program-section {
+    padding: 100px 0;
+    background: var(--black);
+    position: relative;
+  }
+  .program-section::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.2), transparent);
+  }
+
+  .program-header {
+    text-align: center;
+    margin-bottom: 70px;
+  }
+
+  .days-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 0;
+  }
+
+  .day-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.07);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+    border-radius: 4px;
+  }
+  .day-card:hover {
+    border-color: rgba(201,168,76,0.4);
+    transform: translateY(-4px);
+  }
+  .day-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  }
+  .day-card .day-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 80px;
+    font-weight: 900;
+    color: rgba(201,168,76,0.08);
+    position: absolute;
+    top: 16px; right: 24px;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .day-badge {
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.25);
+    padding: 5px 14px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 24px;
+  }
+
+  .day-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 2.2vw, 26px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .day-card .day-sub {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .content-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .content-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .content-list li::before {
+    content: '◆';
+    color: var(--gold);
+    font-size: 8px;
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+
+  /* ── INCLUDES SECTION ── */
+  .includes-section {
+    padding: 100px 0;
+    background: var(--deep);
+  }
+
+  .includes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 60px;
+  }
+
+  .include-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    padding: 32px 28px;
+    border-radius: 4px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+  .include-card:hover {
+    background: rgba(201,168,76,0.06);
+    border-color: rgba(201,168,76,0.3);
+    transform: translateY(-4px);
+  }
+  .include-card .icon {
+    font-size: 36px;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .include-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .include-card p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── PRICING SECTION ── */
+  .pricing-section {
+    padding: 100px 0;
+    background: var(--black);
+    text-align: center;
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    max-width: 800px;
+    margin: 60px auto 0;
+  }
+
+  .price-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 48px 36px;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  .price-card:hover { transform: translateY(-4px); }
+
+  .price-card.featured {
+    background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(42,100,150,0.1));
+    border-color: var(--gold);
+    box-shadow: 0 0 60px rgba(201,168,76,0.15);
+  }
+  .price-card.featured::before {
+    content: 'RECOMENDADO';
+    position: absolute;
+    top: 20px; right: -30px;
+    background: var(--gold);
+    color: var(--black);
+    font-family: 'Syne', sans-serif;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 40px;
+    transform: rotate(45deg);
+    transform-origin: center;
+  }
+
+  .price-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .price-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .price-badge {
+    display: inline-block;
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold-light);
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 2px;
+    margin: 16px 0 24px;
+    display: block;
+  }
+
+  .price-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .price-note {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 32px;
+    line-height: 1.5;
+  }
+  .price-features {
+    list-style: none;
+    text-align: left;
+    margin-bottom: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .price-features li {
+    font-size: 13px;
+    color: var(--muted);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    line-height: 1.5;
+  }
+  .price-features li span.check { color: var(--gold); flex-shrink: 0; }
+  .price-features li span.no { color: var(--red); flex-shrink: 0; }
+
+  .cupo-badge {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--red);
+    border: 1px solid rgba(192,57,43,0.4);
+    background: rgba(192,57,43,0.08);
+    padding: 6px 14px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 16px;
+  }
+
+  /* ── PAYMENT SECTION ── */
+  .payment-section {
+    padding: 60px 0;
+    background: var(--deep);
+    text-align: center;
+  }
+  .payment-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 32px;
+  }
+  .payment-methods {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .payment-pill {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* ── TESTIMONIAL ── */
+  .testimonial-section {
+    padding: 100px 0;
+    background: var(--black);
+    position: relative;
+  }
+
+  .testimonial-card {
+    max-width: 800px;
+    margin: 60px auto 0;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 56px;
+    border-radius: 4px;
+    text-align: center;
+    position: relative;
+  }
+  .testimonial-card::before {
+    content: '"';
+    position: absolute;
+    top: -20px; left: 40px;
+    font-family: 'Playfair Display', serif;
+    font-size: 120px;
+    color: var(--gold);
+    opacity: 0.15;
+    line-height: 1;
+  }
+
+  .testimonial-card blockquote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(18px, 2.2vw, 24px);
+    font-style: italic;
+    color: var(--white);
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+
+  .testimonial-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .video-cta {
+    margin-top: 32px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--gold);
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .video-cta:hover { opacity: 0.75; }
+  .play-btn {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .play-btn::after {
+    content: '';
+    border-left: 14px solid var(--black);
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    margin-left: 3px;
+  }
+
+  /* ── SPEAKER ── */
+  .speaker-section {
+    padding: 100px 0;
+    background: var(--deep);
+  }
+  .speaker-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 80px;
+    align-items: center;
+    margin-top: 60px;
+  }
+  .speaker-visual { position: relative; }
+  .speaker-frame {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(13,27,62,0.8));
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .speaker-initials {
+    font-family: 'Playfair Display', serif;
+    font-size: 80px;
+    font-weight: 900;
+    color: rgba(201,168,76,0.3);
+    user-select: none;
+  }
+  .speaker-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.7));
+  }
+  .speaker-tag {
+    position: absolute;
+    bottom: 20px; left: 20px;
+    z-index: 1;
+    background: rgba(0,0,0,0.85);
+    border: 1px solid rgba(201,168,76,0.3);
+    padding: 12px 20px;
+    border-radius: 2px;
+  }
+  .speaker-tag strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--white);
+    display: block;
+  }
+  .speaker-tag span {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .speaker-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 3vw, 38px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 24px;
+  }
+  .speaker-info p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  /* ── TRUST LOGOS ── */
+  .trust-section {
+    padding: 60px 0;
+    background: var(--black);
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .trust-label {
+    text-align: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 36px;
+  }
+  .logos-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .logo-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 14px 28px;
+    border-radius: 4px;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    transition: all 0.3s;
+  }
+  .logo-item:hover {
+    color: var(--white);
+    border-color: rgba(201,168,76,0.3);
+  }
+
+  /* ── FINAL CTA ── */
+  .final-cta {
+    padding: 120px 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 100%, #1a1a3e 0%, var(--black) 70%);
+    text-align: center;
+    position: relative;
+  }
+  .final-cta::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .final-cta h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 900;
+    color: var(--white);
+    max-width: 780px;
+    margin: 0 auto 24px;
+    line-height: 1.2;
+  }
+  .final-cta h2 em { font-style: italic; color: var(--gold); }
+  .final-cta p {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 500px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+  }
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--deep);
+    padding: 40px 0;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    text-align: center;
+  }
+  footer p {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  /* ── STICKY CTA ── */
+  .sticky-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(10,10,15,0.95);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(201,168,76,0.3);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+    gap: 16px;
+  }
+  .sticky-bar p {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    flex: 1;
+  }
+  .sticky-bar p span { color: var(--gold); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .pain-grid, .days-grid, .pricing-grid, .speaker-grid, .includes-grid { grid-template-columns: 1fr; }
+    .sticky-bar p { display: none; }
+    .day-card .day-num { display: none; }
+    .date-strip { flex-wrap: wrap; justify-content: center; }
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+</style>
+</head>
+<body>
+
+<!-- URGENCY BAND -->
+<div class="urgency-band">
+  <p>⚡ <strong>CUPO PRESENCIAL LIMITADO — 40 PERSONAS</strong> · 7 y 8 de Mayo · Auditorio SISOL, San Isidro</p>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <svg viewBox="0 0 900 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="450" cy="350" r="300" stroke="#c9a84c" stroke-width="0.5"/>
+      <circle cx="450" cy="350" r="200" stroke="#c9a84c" stroke-width="0.5"/>
+      <circle cx="450" cy="350" r="100" stroke="#c9a84c" stroke-width="0.5"/>
+      <line x1="0" y1="350" x2="900" y2="350" stroke="#c9a84c" stroke-width="0.3"/>
+      <line x1="450" y1="0" x2="450" y2="700" stroke="#c9a84c" stroke-width="0.3"/>
+      <line x1="0" y1="0" x2="900" y2="700" stroke="#c9a84c" stroke-width="0.2"/>
+      <line x1="900" y1="0" x2="0" y2="700" stroke="#c9a84c" stroke-width="0.2"/>
+    </svg>
+  </div>
+
+  <div class="badge">Simposio Introductorio · Neurointegración 2025</div>
+
+  <h1>
+    Domine el Código Oculto de la Enfermedad<br>
+    <em>e Implemente en su Consulta el Método<br>que los Pacientes "Incurables" Buscan.</em>
+  </h1>
+
+  <p class="hero-sub">Curso Introductorio a Neurointegración · Dos Jornadas Transformadoras</p>
+
+  <div class="date-strip">
+    <div class="date-pill">
+      <div class="day">07</div>
+      <div class="month">Mayo 2025</div>
+    </div>
+    <div class="date-sep">→</div>
+    <div class="date-pill">
+      <div class="day">08</div>
+      <div class="month">Mayo 2025</div>
+    </div>
+  </div>
+
+  <p class="location-tag">
+    <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0a5 5 0 0 0-5 5c0 3.5 5 11 5 11s5-7.5 5-11a5 5 0 0 0-5-5zm0 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>
+    Auditorio SISOL · San Isidro, Lima · 6–8 PM
+  </p>
+
+  <!-- Solo queda el botón principal; el botón "Ver Testimonio" fue eliminado -->
+  <div class="cta-hero">
+    <a href="https://api.whatsapp.com/send?phone=+51947348492&text=HOLA,%20SALUDOS%20QUIERO%20INSCRIBIRME" target="_blank" rel="noopener" class="btn-gold">APARTAR MI CUPO AHORA →</a>
+  </div>
+</section>
+
+<!-- PAIN SECTION -->
+<section class="pain-section">
+  <div class="container">
+    <div class="pain-grid">
+      <div>
+        <span class="section-tag">¿Le resulta familiar esto?</span>
+        <h2 class="section-title">Lo que su formación<br><em>jamás le explicó</em></h2>
+        <br>
+        <ul class="pain-list reveal">
+          <li><span class="icon">❌</span> Sus pacientes no mejoran con los tratamientos convencionales y regresan una y otra vez.</li>
+          <li><span class="icon">❌</span> La "cronicidad" parece una sentencia inapelable que usted no sabe cómo revertir.</li>
+          <li><span class="icon">❌</span> Siente que existe una dimensión de la enfermedad que la academia no le enseñó.</li>
+          <li><span class="icon">❌</span> Sus colegas hablan de resultados extraordinarios y usted aún no conoce el protocolo.</li>
+        </ul>
+      </div>
+      <div class="pain-promise reveal reveal-delay-2">
+        <blockquote>
+          "La enfermedad no es un error de la naturaleza.<br>
+          Es un programa biológico de supervivencia con<br>
+          <span>un código que se puede descifrar.</span>"
+        </blockquote>
+        <p style="color:var(--muted);font-size:14px;line-height:1.7;">En este simposio aprenderá a leer ese código, identificar los focos activos y activar la resolución del conflicto subyacente — con protocolos replicables en su consulta.</p>
+        <br>
+        <!-- "Quiero saber más" ahora abre WhatsApp con mensaje personalizado -->
+        <a href="https://api.whatsapp.com/send?phone=+51947348492&text=HOLA,%20quiero%20saber%20m%C3%A1s" target="_blank" rel="noopener" class="btn-outline">Quiero saber más →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAM -->
+<section class="program-section" id="programa">
+  <div class="container">
+    <div class="program-header reveal">
+      <span class="section-tag">El Programa</span>
+      <h2 class="section-title">Dos Jornadas.<br><em>Una Transformación Completa.</em></h2>
+    </div>
+    <div class="days-grid">
+      <div class="day-card reveal reveal-delay-1">
+        <div class="day-num">01</div>
+        <div class="day-badge">7 de Mayo · Parte I</div>
+        <h3>La Revolución que su Formación Médica le Ocultó</h3>
+        <p class="day-sub">6:00 PM – 8:00 PM</p>
+        <ul class="content-list">
+          <li>Las 5 Leyes Biológicas que rigen toda enfermedad</li>
+          <li>Los Focos de Hamer y su localización precisa</li>
+          <li>Por qué la "cronicidad" es un conflicto biológico activo</li>
+          <li>El fin definitivo del concepto "incurable"</li>
+          <li>Casos clínicos con resolución documentada</li>
+        </ul>
+      </div>
+      <div class="day-card reveal reveal-delay-2">
+        <div class="day-num">02</div>
+        <div class="day-badge">8 de Mayo · Parte II</div>
+        <h3>Acelerador de Resultados Médicos</h3>
+        <p class="day-sub">6:00 PM – 8:00 PM</p>
+        <ul class="content-list">
+          <li>Protocolos NEUROCUT: implementación paso a paso</li>
+          <li>Modelado de consulta premium y posicionamiento de marca</li>
+          <li>Estrategias de rentabilidad con programas de sanidad</li>
+          <li>Captación y fidelización del paciente ideal</li>
+          <li>Práctica grupal en vivo (modalidad presencial)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INCLUDES -->
+<section class="includes-section">
+  <div class="container">
+    <div style="text-align:center;" class="reveal">
+      <span class="section-tag">Todo lo que recibe</span>
+      <h2 class="section-title">Su inversión incluye</h2>
+    </div>
+    <div class="includes-grid">
+      <div class="include-card reveal reveal-delay-1">
+        <span class="icon">🏅</span>
+        <h4>Diploma de Capacitación</h4>
+        <p>Certificado oficial de capacitación privada avalado por las instituciones organizadoras.</p>
+      </div>
+      <div class="include-card reveal reveal-delay-2">
+        <span class="icon">📲</span>
+        <h4>Material Digital Completo</h4>
+        <p>Acceso a todas las presentaciones, protocolos y recursos para implementar de inmediato.</p>
+      </div>
+      <div class="include-card reveal reveal-delay-3">
+        <span class="icon">💬</span>
+        <h4>Comunidad Exclusiva</h4>
+        <p>Acceso al grupo privado de WhatsApp con todos los asistentes y actualizaciones continuas.</p>
+      </div>
+      <div class="include-card reveal reveal-delay-1">
+        <span class="icon">🧠</span>
+        <h4>Prácticas Grupales en Vivo</h4>
+        <p>Sesiones prácticas guiadas para presenciales. Aprenda haciendo, no solo observando.</p>
+      </div>
+      <div class="include-card reveal reveal-delay-2">
+        <span class="icon">🎥</span>
+        <h4>Streaming en Directo</h4>
+        <p>Acceso vía Zoom para participantes semipresenciales con grabación disponible 30 días.</p>
+      </div>
+      <div class="include-card reveal reveal-delay-3">
+        <span class="icon">🌐</span>
+        <h4>Red Profesional</h4>
+        <p>Networking con colegas de la región que practican o están iniciando en Neurointegración.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="inscripcion">
+  <div class="container">
+    <span class="section-tag" style="display:block;text-align:center;">Opciones de Inscripción</span>
+    <h2 class="section-title reveal">Elija su modalidad de acceso</h2>
+    <div class="pricing-grid">
+
+      <!-- SEMIPRESENCIAL -->
+      <div class="price-card featured reveal reveal-delay-1">
+        <p class="price-label">Modalidad</p>
+        <h3>Semipresencial</h3>
+        <p style="font-size:13px;color:var(--muted);">Streaming en vivo vía Zoom</p>
+        <span class="price-badge">🎓 Beca al 100% — Auspicio Institucional</span>
+        <div class="price-amount">USD $ 150.00</div>
+        <p class="price-note">Inversión cubierta por Auspicio Institucional.<br>Obtenga su Certificado Exclusivo.</p>
+        <ul class="price-features">
+          <li><span class="check">✔</span> Acceso a las 2 conferencias en directo</li>
+          <li><span class="check">✔</span> Grabación disponible por 30 días</li>
+          <li><span class="check">✔</span> Diploma de capacitación privada</li>
+          <li><span class="check">✔</span> Material digital completo</li>
+          <li><span class="check">✔</span> Comunidad WhatsApp de asistentes</li>
+          <li><span class="no">✗</span> No incluye práctica grupal presencial</li>
+        </ul>
+        <a href="https://api.whatsapp.com/send?phone=+51947348492&text=HOLA,%20SALUDOS%20QUIERO%20INSCRIBIRME" target="_blank" rel="noopener" class="btn-gold" style="display:block;text-align:center;">APARTAR MI CUPO →</a>
+      </div>
+
+      <!-- PRESENCIAL -->
+      <div class="price-card reveal reveal-delay-2">
+        <span class="cupo-badge">⚠ CUPO LIMITADO — 40 personas</span>
+        <p class="price-label">Modalidad</p>
+        <h3>Presencial</h3>
+        <p style="font-size:13px;color:var(--muted);">Auditorio SISOL · San Isidro</p>
+        <div class="price-amount" style="font-size:32px;margin-top:16px;">Consultar valor</div>
+        <p class="price-note">Incluye experiencia completa, prácticas y networking en vivo.</p>
+        <ul class="price-features">
+          <li><span class="check">✔</span> Asistencia presencial ambas jornadas</li>
+          <li><span class="check">✔</span> Prácticas grupales en vivo</li>
+          <li><span class="check">✔</span> Diploma de capacitación privada</li>
+          <li><span class="check">✔</span> Material digital completo</li>
+          <li><span class="check">✔</span> Comunidad WhatsApp de asistentes</li>
+          <li><span class="check">✔</span> Networking presencial con colegas</li>
+        </ul>
+        <a href="https://api.whatsapp.com/send?phone=+51947348492&text=HOLA,%20SALUDOS%20QUIERO%20INSCRIBIRME" target="_blank" rel="noopener" class="btn-outline" style="display:block;text-align:center;">CONSULTAR DISPONIBILIDAD →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PAYMENT -->
+<section class="payment-section" id="pago">
+  <div class="container">
+    <p class="payment-title">Medios de pago disponibles</p>
+    <div class="payment-methods">
+      <div class="payment-pill">💚 Yape</div>
+      <div class="payment-pill">💙 Plin</div>
+      <div class="payment-pill">🏦 Transferencia Bancaria</div>
+    </div>
+    <p style="margin-top:24px;font-size:13px;color:var(--muted);font-family:'Syne',sans-serif;">Al presionar "Apartar mi Cupo" será contactado en menos de 24 horas para confirmar su registro.</p>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="testimonial-section">
+  <div class="container">
+    <div style="text-align:center;" class="reveal">
+      <span class="section-tag">Testimonios Reales</span>
+      <h2 class="section-title">Lo que dicen quienes<br><em>ya lo vivieron</em></h2>
+    </div>
+    <div class="testimonial-card reveal reveal-delay-1">
+      <blockquote>
+        "Yo tenía gastritis por muchos años... Después de aplicar lo que aprendí en el curso, por primera vez entendí el origen real de mi malestar. Fue revelador. Nunca imaginé que una emoción no resuelta pudiera manifestarse de esa manera en mi cuerpo."
+      </blockquote>
+      <p class="testimonial-name">Sor Casimira</p>
+      <p style="color:var(--muted);font-size:13px;margin-top:6px;">Participante anterior</p>
+      <!-- Este botón se mantiene — apunta al video de YouTube -->
+      <a href="https://youtu.be/1CIoLwJp13I?si=M9OkUVKA4V_3X_bK" target="_blank" rel="noopener" class="video-cta">
+        <span class="play-btn"></span>
+        Ver testimonio en video
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- SPEAKER -->
+<section class="speaker-section">
+  <div class="container">
+    <span class="section-tag">Su Facilitador</span>
+    <div class="speaker-grid">
+      <div class="speaker-visual reveal">
+        <div class="speaker-frame">
+          <div class="speaker-initials">FC</div>
+          <div class="speaker-tag">
+            <strong>Dr. Felipe Camero A.</strong>
+            <span>Neurointegrología</span>
+          </div>
+        </div>
+      </div>
+      <div class="speaker-info reveal reveal-delay-2">
+        <h3>Dr. Felipe Camero Aguilar</h3>
+        <p>Pionero en Neurointegración en la región, el Dr. Camero ha dedicado su carrera a descifrar los mecanismos biológicos subyacentes detrás de las enfermedades crónicas que la medicina convencional cataloga como "incurables".</p>
+        <p>Con una trayectoria que combina la medicina clínica, la neurociencia aplicada y la biología sistémica, ha desarrollado los protocolos NEUROCUT que están transformando la práctica médica de cientos de profesionales.</p>
+        <p>Su enfoque integra las 5 Leyes Biológicas, los Focos de Hamer y estrategias de intervención terapéutica para ofrecer resultados documentados y replicables.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST LOGOS -->
+<section class="trust-section">
+  <div class="container">
+    <p class="trust-label">Avalado y reconocido por</p>
+    <div class="logos-row">
+      <div class="logo-item">SISOL</div>
+      <div class="logo-item">EPNI</div>
+      <div class="logo-item">RUC Oficial</div>
+      <div class="logo-item">Cert. Capacitación Privada</div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="container">
+    <h2 class="reveal">El paciente que no mejora<br><em>está esperando que usted<br>conozca esto.</em></h2>
+    <p class="reveal reveal-delay-1">7 y 8 de mayo. Auditorio SISOL, San Isidro. Cupos presenciales limitados a 40 personas. No postergue esta decisión.</p>
+    <!-- Botón "Ver Testimonio" eliminado; solo queda el botón de inscripción -->
+    <div class="cta-buttons reveal reveal-delay-2">
+      <a href="https://api.whatsapp.com/send?phone=+51947348492&text=HOLA,%20SALUDOS%20QUIERO%20INSCRIBIRME" target="_blank" rel="noopener" class="btn-gold">APARTAR MI CUPO AHORA</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p>© 2025 Dr. Felipe Camero Aguilar · Simposio de Neurointegración · San Isidro, Lima, Perú</p>
+    <p style="margin-top:8px;">Auditorio SISOL · 7 y 8 de Mayo · 6:00 – 8:00 PM</p>
+  </div>
+</footer>
+
+<!-- STICKY BAR -->
+<div class="sticky-bar">
+  <p>⚡ <span>7 y 8 de Mayo</span> · Auditorio SISOL, San Isidro · Cupos presenciales limitados</p>
+  <a href="https://api.whatsapp.com/send?phone=+51947348492&text=HOLA,%20SALUDOS%20QUIERO%20INSCRIBIRME" target="_blank" rel="noopener" class="btn-gold" style="padding:12px 28px;font-size:12px;white-space:nowrap;">APARTAR CUPO →</a>
+</div>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
